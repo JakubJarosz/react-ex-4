@@ -1,4 +1,5 @@
-import React ,{useState, useEffect} from "react";
+import React ,{useState, useEffect, useId} from "react";
+import { nanoid } from "nanoid";
 
 const Phonebook = () => {
 const [namelist, setNamelist] = useState('');   
@@ -17,15 +18,19 @@ const handlePhone = (e) => {
   
 const onBtnPress = (e) => {
     e.preventDefault();
-    const listArr = 
+    setFullList([
+        ...fullList,
         {
             "name": namelist,
-            "phone": phonelist
+            "phone": phonelist,
+            "id": nanoid()
         }
-    setFullList(fullList.push(listArr))
-    console.log(fullList)
+    ])
+    // console.log(fullList)
   
 }
+
+
 
 
     return (
@@ -37,6 +42,11 @@ const onBtnPress = (e) => {
         <input type="text" onChange={handlePhone} /><br></br>
         <button type="submit">Submit</button>
       </form>
+      <ul>
+            {fullList.map((el) => (
+                <li key={el.id}>Name: {el.name} Numer:{el.phone}<button onClick={() => {setFullList(fullList.filter((e) => el.id !== e.id))}}>Delete</button></li>
+            ))}
+        </ul>
        </div>
     )
 }
